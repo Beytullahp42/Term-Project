@@ -1,7 +1,9 @@
 package tr.igb.todoapp
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -47,9 +49,10 @@ fun HomeScreen(
 
 @Composable
 fun TaskCard(task: Task, viewModel: TaskViewModel) {
-    Row {
-        Checkbox(checked = viewModel.taskIsCompletedState, onCheckedChange = {
-            viewModel.taskIsCompletedState = !viewModel.taskIsCompletedState
+    Row(Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween) {
+        Checkbox(checked = task.isCompleted, onCheckedChange = { isChecked ->
+            viewModel.updateTask(task.copy(isCompleted = isChecked))
         })
         Text(text = task.title)
         Button(onClick = {
