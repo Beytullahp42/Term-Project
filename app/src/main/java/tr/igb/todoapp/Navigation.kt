@@ -19,5 +19,8 @@ fun Navigation(
         composable("Home") {
             HomeScreen(navController, viewModel)
         }
+        composable("AddTask") {
+            AddTask(0, viewModel, navController)
+        }
     }
 }

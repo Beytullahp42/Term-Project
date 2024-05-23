@@ -27,7 +27,7 @@ fun HomeScreen(
     Scaffold(
         topBar = { TopAppBar(title = { Text(text = "To-Do List") }) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("") }) {
+            FloatingActionButton(onClick = { navController.navigate("AddTask") }) {
                 Text(text = "Create Task")
             }
         }
