@@ -52,7 +52,9 @@ fun TaskCard(task: Task, viewModel: TaskViewModel) {
             viewModel.taskIsCompletedState = !viewModel.taskIsCompletedState
         })
         Text(text = task.title)
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = {
+            viewModel.deleteTask(task)
+        }) {
             Text(text = "Delete")
         }
     }
