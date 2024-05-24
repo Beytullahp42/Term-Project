@@ -1,4 +1,4 @@
-package tr.igb.todoapp.data;
+package tr.igb.todoapp.data
 
 import kotlinx.coroutines.flow.Flow
 
@@ -9,6 +9,8 @@ class TaskRepository(private val taskDao: TaskDao) {
     }
 
     fun getAllTasks(): Flow<List<Task>> = taskDao.getAllTasks()
+
+    fun getAllTasksSortedByPriority(): Flow<List<Task>> = taskDao.getAllTasksSortedByPriority()
 
     fun getTaskById(id: Long): Flow<Task> {
         return taskDao.getTaskById(id)

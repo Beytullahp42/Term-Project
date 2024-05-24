@@ -26,12 +26,10 @@ import tr.igb.todoapp.data.Task
 fun AddTask(
     id: Long, viewModel: TaskViewModel, navController: NavController
 ) {
-    var task = Task(0L, "", "", 0, false)
     val topAppText: String
     if (id != 0L) {
         val taskState =
             viewModel.getTaskById(id).collectAsState(initial = Task(0L, "", "", 0, false))
-        task = taskState.value
         viewModel.taskTitleState = taskState.value.title
         viewModel.taskDescriptionState = taskState.value.description
         viewModel.taskPriorityState = taskState.value.priority
@@ -47,7 +45,7 @@ fun AddTask(
     Scaffold(
         topBar = { TopAppBar(title = { Text(text = "$topAppText Task") }) },
 
-        ) {
+        ) { it ->
         Column(
             Modifier
                 .fillMaxSize()

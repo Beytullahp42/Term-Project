@@ -17,6 +17,9 @@ abstract class TaskDao {
     @Query("SELECT * FROM task_table")
     abstract fun getAllTasks(): Flow<List<Task>>
 
+    @Query("SELECT * FROM task_table ORDER BY `task-priority` DESC")
+    abstract fun getAllTasksSortedByPriority(): Flow<List<Task>>
+
     @Query("SELECT * FROM task_table WHERE id = :id")
     abstract fun getTaskById(id: Long): Flow<Task>
 

@@ -45,6 +45,12 @@ class TaskViewModel(
         }
     }
 
+    fun getAllTasksSortedByPriority(): Flow<List<Task>> {
+        return taskRepository.getAllTasksSortedByPriority()
+    }
+
+
+
     fun addTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
             taskRepository.insert(task)
