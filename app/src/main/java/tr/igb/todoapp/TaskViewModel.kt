@@ -48,6 +48,10 @@ class TaskViewModel(
     fun addTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
             taskRepository.insert(task)
+            taskTitleState = ""
+            taskDescriptionState = ""
+            taskPriorityState = 0
+            taskIsCompletedState = false
         }
     }
 
