@@ -34,10 +34,14 @@ fun AddTask(
         task = taskState.value
         viewModel.taskTitleState = taskState.value.title
         viewModel.taskDescriptionState = taskState.value.description
+        viewModel.taskPriorityState = taskState.value.priority
+        viewModel.taskIsCompletedState = taskState.value.isCompleted
+
         topAppText = "Update"
     } else {
         viewModel.taskTitleState = ""
         viewModel.taskDescriptionState = ""
+        viewModel.taskPriorityState = 1
         topAppText = "Create"
     }
     Scaffold(
@@ -45,7 +49,9 @@ fun AddTask(
 
         ) {
         Column(
-            Modifier.fillMaxSize().padding(it), horizontalAlignment = Alignment.CenterHorizontally
+            Modifier
+                .fillMaxSize()
+                .padding(it), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TaskTextField(label = "Title", value = viewModel.taskTitleState) {
                 viewModel.onTaskTitleChanged(it)
@@ -62,18 +68,21 @@ fun AddTask(
                     else -> "Low"
                 },
                 onSelectedChange = { selectedOption ->
-                    viewModel.taskPriorityState = when (selectedOption) {
-                        "Low" -> 1
-                        "Medium" -> 2
-                        "High" -> 3
-                        else -> 1
-                    }
+                    viewModel.onTaskPriorityChanged(
+                        when (selectedOption) {
+                            "Low" -> 1
+                            "Medium" -> 2
+                            "High" -> 3
+                            else -> 1
+                        }
+                    )
                 })
             if (id != 0L) {
                 Row {
-                    Checkbox(checked = task.isCompleted, onCheckedChange = { isChecked ->
-                        viewModel.onTaskIsCompletedChanged(isChecked)
-                    })
+                    Checkbox(checked = viewModel.taskIsCompletedState,
+                        onCheckedChange = { isChecked ->
+                            viewModel.onTaskIsCompletedChanged(isChecked)
+                        })
                     Text(text = "Is Completed?")
                 }
             }
