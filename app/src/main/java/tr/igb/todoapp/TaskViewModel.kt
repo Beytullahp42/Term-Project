@@ -9,17 +9,19 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import tr.igb.todoapp.data.Graph
 import tr.igb.todoapp.data.Task
+import tr.igb.todoapp.data.TaskDatabase
 import tr.igb.todoapp.data.TaskRepository
 
 class TaskViewModel(
-    private val taskRepository: TaskRepository = Graph.taskRepository
+    database: TaskDatabase
 ) : ViewModel() {
     var taskTitleState by mutableStateOf("")
     var taskDescriptionState by mutableStateOf("")
     var taskPriorityState by mutableIntStateOf(0)
     var taskIsCompletedState by mutableStateOf(false)
+    private val taskRepository: TaskRepository = TaskRepository(taskDao = database.taskDao())
+
 
     fun onTaskTitleChanged(newString: String) {
         taskTitleState = newString
@@ -48,7 +50,6 @@ class TaskViewModel(
     fun getAllTasksSortedByPriority(): Flow<List<Task>> {
         return taskRepository.getAllTasksSortedByPriority()
     }
-
 
 
     fun addTask(task: Task) {

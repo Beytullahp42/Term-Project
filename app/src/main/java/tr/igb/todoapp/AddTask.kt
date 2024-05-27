@@ -1,5 +1,6 @@
 package tr.igb.todoapp
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import tr.igb.todoapp.data.Task
 
@@ -46,6 +48,7 @@ fun AddTask(
         topBar = { TopAppBar(title = { Text(text = "$topAppText Task") }) },
 
         ) { it ->
+        val context = LocalContext.current
         Column(
             Modifier
                 .fillMaxSize()
@@ -86,27 +89,34 @@ fun AddTask(
             }
             Button(onClick = {
                 run {
-                    if (id == 0L) {
-                        viewModel.addTask(
-                            Task(
-                                title = viewModel.taskTitleState,
-                                description = viewModel.taskDescriptionState,
-                                priority = viewModel.taskPriorityState,
-                                isCompleted = false
+                    if (viewModel.taskTitleState.isNotEmpty()) {
+                        if (id == 0L) {
+                            viewModel.addTask(
+                                Task(
+                                    title = viewModel.taskTitleState,
+                                    description = viewModel.taskDescriptionState,
+                                    priority = viewModel.taskPriorityState,
+                                    isCompleted = false
+                                )
                             )
-                        )
-                    } else {
-                        viewModel.updateTask(
-                            Task(
-                                id = id,
-                                title = viewModel.taskTitleState,
-                                description = viewModel.taskDescriptionState,
-                                priority = viewModel.taskPriorityState,
-                                isCompleted = viewModel.taskIsCompletedState
+                            Toast.makeText(context, "Task created", Toast.LENGTH_SHORT).show()
+                        } else {
+                            viewModel.updateTask(
+                                Task(
+                                    id = id,
+                                    title = viewModel.taskTitleState,
+                                    description = viewModel.taskDescriptionState,
+                                    priority = viewModel.taskPriorityState,
+                                    isCompleted = viewModel.taskIsCompletedState
+                                )
                             )
-                        )
+                            Toast.makeText(context, "Task updated", Toast.LENGTH_SHORT).show()
+                        }
+                        navController.navigateUp()
                     }
-                    navController.navigateUp()
+                    else{
+                        Toast.makeText(context, "Title cannot be empty", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }) {
                 Text(text = topAppText)

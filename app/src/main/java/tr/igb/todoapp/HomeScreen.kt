@@ -58,16 +58,16 @@ fun HomeScreen(
                     Text(text = "Hide Completed Tasks")
                 }
             }
-            val taskList =
-                if (sortByPriority) viewModel.getAllTasksSortedByPriority().collectAsState(initial = listOf()) else viewModel.getAllTasks.collectAsState(initial = listOf())
+            val taskList = if (sortByPriority) viewModel.getAllTasksSortedByPriority()
+                .collectAsState(initial = listOf()) else viewModel.getAllTasks.collectAsState(
+                initial = listOf()
+            )
             LazyColumn(
                 Modifier.fillMaxSize()
             ) {
                 items(taskList.value, key = { task -> task.id }) { task ->
                     if (!hideCompletedTasks || !task.isCompleted) TaskCard(
-                        task = task,
-                        viewModel,
-                        navController
+                        task = task, viewModel, navController
                     )
                 }
             }

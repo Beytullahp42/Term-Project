@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.room.Room
+import tr.igb.todoapp.data.TaskDatabase
 import tr.igb.todoapp.ui.theme.ToDoAppTheme
 
 class MainActivity : ComponentActivity() {
