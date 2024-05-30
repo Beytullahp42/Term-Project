@@ -7,19 +7,28 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import tr.igb.todoapp.data.Task
+import tr.igb.todoapp.ui.theme.Green
+import tr.igb.todoapp.ui.theme.Red
+import tr.igb.todoapp.ui.theme.Yellow
 
 @Composable
 fun TaskCard(task: Task, viewModel: TaskViewModel, navController: NavController) {
@@ -28,29 +37,31 @@ fun TaskCard(task: Task, viewModel: TaskViewModel, navController: NavController)
     Row(
         Modifier
             .fillMaxWidth()
+            .background(
+                color = if (task.priority == 1) Green else if (task.priority == 2) Yellow else Red,
+                shape = RoundedCornerShape(8.dp)
+            )
             .clickable {
                 navController.navigate("AddTask/${task.id}")
             }
-            .background(color = if (task.priority == 1) Color.Green else if (task.priority == 2) Color.Yellow else Color.Red)
-            .padding(16.dp),
+            .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
+        verticalAlignment = Alignment.CenterVertically) {
         Checkbox(checked = task.isCompleted, onCheckedChange = { isChecked ->
             viewModel.updateTask(task.copy(isCompleted = isChecked))
-        })
-        Text(text = task.title)
-        Button(onClick = {
+        }, colors = CheckboxDefaults.colors(uncheckedColor = Color.Black))
+        Text(text = task.title, color = Color.Black)
+        IconButton(onClick = {
             showDialog.value = true
         }) {
-            Text(text = "Delete")
+            Icon(painter = painterResource(id = R.drawable.delete), contentDescription = "Delete Task")
         }
     }
 
     if (showDialog.value) {
-        AlertDialog(
-            onDismissRequest = {
-                showDialog.value = false
-            },
+        AlertDialog(onDismissRequest = {
+            showDialog.value = false
+        },
             title = { Text(text = "Confirmation") },
             text = { Text("Are you sure you want to delete this task?") },
             confirmButton = {
@@ -68,7 +79,6 @@ fun TaskCard(task: Task, viewModel: TaskViewModel, navController: NavController)
                 }) {
                     Text("Cancel")
                 }
-            }
-        )
+            })
     }
 }

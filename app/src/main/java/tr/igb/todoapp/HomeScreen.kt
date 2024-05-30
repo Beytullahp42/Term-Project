@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +64,8 @@ fun HomeScreen(
                 initial = listOf()
             )
             LazyColumn(
-                Modifier.fillMaxSize()
+                Modifier.fillMaxSize().padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(taskList.value, key = { task -> task.id }) { task ->
                     if (!hideCompletedTasks || !task.isCompleted) TaskCard(
