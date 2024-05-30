@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import tr.igb.todoapp.data.Task
@@ -47,14 +49,25 @@ fun TaskCard(task: Task, viewModel: TaskViewModel, navController: NavController)
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically) {
-        Checkbox(checked = task.isCompleted, onCheckedChange = { isChecked ->
-            viewModel.updateTask(task.copy(isCompleted = isChecked))
-        }, colors = CheckboxDefaults.colors(uncheckedColor = Color.Black))
-        Text(text = task.title, color = Color.Black)
+        Checkbox(
+            checked = task.isCompleted, onCheckedChange = { isChecked ->
+                viewModel.updateTask(task.copy(isCompleted = isChecked))
+            }, colors = CheckboxDefaults.colors(
+                uncheckedColor = Color.Black,
+                checkedColor = Color.Transparent,
+                checkmarkColor = Color.Black
+            )
+        )
+        Text(text = task.title, color = Color.Black, fontWeight = FontWeight.Bold)
         IconButton(onClick = {
             showDialog.value = true
         }) {
-            Icon(painter = painterResource(id = R.drawable.delete), contentDescription = "Delete Task")
+            Icon(
+                painter = painterResource(id = R.drawable.delete),
+                contentDescription = "Delete Task",
+                tint = Color.Black,
+                modifier = Modifier.size(32.dp)
+            )
         }
     }
 
